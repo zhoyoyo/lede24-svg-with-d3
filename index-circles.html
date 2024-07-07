@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+  <head>
+
+    <!-- some basic stuff  -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SVG with D3</title>
+
+    <!-- 
+      add your stylesheet 
+      base.css loads the basic stuff
+      you can tweak your own css in custom.css
+      WARNING: the order of the stylesheets matters
+    -->
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="custom.css">
+
+    <!-- Step 2: add your d3 script below -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+
+    <!-- your JS code that uses d3 to manipulate data -->
+    <script>
+
+      // Step 4. load your data with d3.csv()
+      d3.csv("happiness-sample-data.csv")
+        .then(data => {
+          // check if the data is loaded:
+          console.log(data)
+          
+          // == your code happens below ==
+
+          // Step 5. create an SVG container inside #my-svg-chart using d3.select().append()
+          const myChart = 
+            d3
+            .select('#my-svg-chart')
+            .append('svg')
+            .attr('width', 640)
+            .attr('height', 640)
+
+          // Step 6. create SVG shapes binded with data, using d3.selectAll().data().join()
+
+          const individualCharts = myChart
+              .selectAll('circle')
+              .data(data)
+              .join('circle');
+
+          // Step 7. tweak the attributes of the SVG shapes to position them at the right places
+          const gridSize = 20, gap = 2; 
+
+          // with SVG rectangle-specific attributes
+
+          individualCharts
+            .attr('cx',(data,index) => {
+                  return Math.floor( index %10)*(gridSize+ gap);
+              })
+            .attr('cy',(d,i) => {
+                  return Math.floor(i/10)*(gridSize+ gap);
+              })
+            .attr('r', d=> {
+              return (+d.Happiness/6)*gridSize;
+            })
+
+            //   .attr('x', (data,index) => {
+            //       return Math.floor( index %10)*(gridSize+ gap);
+            //   })
+            //   .attr('y', (d,i) => {
+            //       return Math.floor(i/10)*(gridSize+ gap);
+            //   })
+            // .attr('width', gridSize)
+            // .attr('height', gridSize)
+
+
+            // Step 8. Encode data onto the SVG shapes using colors, sizes, directions, etc.
+
+            individualCharts
+            .style('fill', (d,i) => {
+                if (d.Happiness == '1') {return 'black'}
+                else if (d.Happiness == '2') {return 'grey'}
+                else {return 'gold'}
+            });
+
+            
+
+
+
+        })
+
+
+
+      
+
+    </script>
+    
+  </head>
+  <body>
+
+    <h1>CHART TITLE</h1>
+    <p>DESCRIPTION</p>
+    <div id="my-svg-chart">
+      
+    </div>
+
+  </body>
+</html>
