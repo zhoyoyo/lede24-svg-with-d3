@@ -52,14 +52,21 @@
 
           individualCharts
             .attr('cx',(data,index) => {
-                  return Math.floor( index %10)*(gridSize+ gap);
+                  return Math.floor( index %10)*(gridSize+ gap) + gridSize/2;
               })
             .attr('cy',(d,i) => {
-                  return Math.floor(i/10)*(gridSize+ gap);
+                  return Math.floor(i/10)*(gridSize+ gap) + gridSize/2;
               })
             .attr('r', d=> {
               return (+d.Happiness/6)*gridSize;
             })
+            .on('mousemove', function(d,i) {
+              d3.select(this).style('stroke','red')
+            })
+            .on('mouseout', function(d,i) {
+              d3.select(this).style('stroke','transparent')
+            })
+
 
             //   .attr('x', (data,index) => {
             //       return Math.floor( index %10)*(gridSize+ gap);
