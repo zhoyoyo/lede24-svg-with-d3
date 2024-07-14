@@ -41,16 +41,17 @@
 
 
           // Step 6. create SVG elements binded with data
-          const days = myChart
-            .selectAll('rect')
+          const individualCharts = myChart
+            .selectAll('g')
             .data(data)
-            .join('rect');
+            .join('g');
 
 
           // Step 7. Position the SVG shapes at the right places
           const gridSize = 20, gap = 2;
 
-          days
+          individualCharts
+            .append('rect')
             // SVG rectangle specific attributes
             .attr('x', (d,i) => {
               return Math.floor(i%10)*(gridSize+ gap);
@@ -61,15 +62,37 @@
             .attr('width', gridSize)
             .attr('height', gridSize)
 
-          // Step 8. Encode data onto the SVG shapes
-          days.style('fill', d=> {
+        individualCharts
+            .append('text')
+            // SVG text specific attributes
+            .attr('x', (d,i) => {
+              return Math.floor(i%10)*(gridSize+ gap);
+            })
+            .attr('y', (d,i) => {
+              return Math.floor(i/10)*(gridSize+ gap) + gridSize;
+            })
+            .attr('dy', -5)
+            .text((d,i)=> d.Happiness);
+
+        // Step 8. Encode data onto the SVG shapes
+        individualCharts.selectAll('rect').style('fill', d=> {
             if (d.Happiness == '1') {return 'black'}
             else if (d.Happiness == '2') {return 'grey'}
             else {return 'gold'}
-          })
+        })
 
 
-          // 
+        // Step 9. Tooltips
+        individualCharts
+            .on('mousemove', function(d,i){
+                d3.select(this).classed('show',true);
+            })
+            .on('mouseout', function(d,i){
+                    d3.select(this).classed('show',false);
+            })
+
+        
+
 
 
         })

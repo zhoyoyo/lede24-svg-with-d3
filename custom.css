@@ -6,7 +6,20 @@
     position: relative;
     margin: 0 auto;
 }
+#my-svg-chart g {
+    pointer-events: all;
+    cursor: pointer;
 
+}
+
+#my-svg-chart text {
+    display: none;
+    
+}
+
+#my-svg-chart .show text {
+    display: block;
+}
 
 
 
